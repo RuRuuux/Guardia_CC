@@ -37,7 +37,6 @@ void print_instruction(char **instruction){
     for (int i = 0; i < 15; i++){
         printf("%s\n\r", instruction[i]);
     }
-    printf("=====================================\n\r");
 }
 
 int setup_serial_port(const char *port_name) {
@@ -69,11 +68,11 @@ int write_serial_port(int fd, const char *data, size_t size) {
 }
 
 int main(int argc, char **argv) {
-    int ret = -1;
-    int len = 0;
-    int bytes_read = 0;
+    //int ret = -1;
+    //int len = 0;
+    //int bytes_read = 0;
     struct pollfd fds;
-    fds.events = POLLIN;
+    //fds.events = POLLIN;
     char *instruction[] = {
     "LED1 ON",
     "LED1 OFF",
@@ -111,10 +110,9 @@ int main(int argc, char **argv) {
     {
         
         
-        printf("Instruction : ");
+        printf("=====================================\n\rInstruction : ");
         
 
-        
 
         if (fgets(buffer_sending, sizeof(buffer_sending), stdin) != NULL) {
             buffer_sending[strcspn(buffer_sending, "\n")] = 0;
@@ -156,4 +154,3 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-/**/

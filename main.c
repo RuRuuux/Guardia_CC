@@ -78,6 +78,9 @@ int main(int argc, char **argv) {
     "CHENILLARD2 OFF",
     "CHENILLARD3 ON",
     "CHENILLARD3 OFF",
+    "CHENILLARD FREQUENCE1",
+    "CHENILLARD FREQUENCE2",
+    "CHENILLARD FREQUENCE3"
     };
 
     if (argc < 2) {
@@ -95,7 +98,7 @@ int main(int argc, char **argv) {
     uint8_t ch;
 
     printf("Instruction possible : \n\r");
-    for (int i = 0; i < 12; i++){
+    for (int i = 0; i < 15; i++){
         printf("%s\n\r", instruction[i]);
     }
     while (1) 
@@ -109,20 +112,28 @@ int main(int argc, char **argv) {
             buffer_sending[strcspn(buffer_sending, "\n")] = 0;
                 if ((buffer_sending[0] == 'q' || buffer_sending[0] == 'Q') && strlen(buffer_sending) == 1){ 
                     printf("fermeture du programme.\n\r"); 
-                    break;  
+                    break; 
                 }
                 else if((buffer_sending[0] == 'c' || buffer_sending[0] == 'C') && strlen(buffer_sending) == 1){
                     system("clear");
                     memset(buffer_sending,0,sizeof(buffer_sending));        
                 }
                 else if((buffer_sending[0] == 'h' || buffer_sending[0] == 'H') && strlen(buffer_sending) == 1){
-                    for (int i = 0; i < 12; i++){
+                    for (int i = 0; i < 15; i++){
                         printf("%s\n\r", instruction[i]);
                     }
                     memset(buffer_sending,0,sizeof(buffer_sending));
                 }
                 else if(verif_instruction(instruction, buffer_sending) == 1){
-                    printf("envoyée avec succès : %s\n\r",buffer_sending);
+                    
+                    ssize_t bytes = write(fds.fd, buffer_sending, strlen(buffer_sending));
+                    if (bytes == -1){
+                        printf("erreur\n\r");
+                    }
+                    else{
+                        printf("envoyée avec succès : %s\n\r",buffer_sending);
+                        printf("nombre de bytes envoyés : %ld\n\r", bytes);
+                    }
                     memset(buffer_sending,0,sizeof(buffer_sending));
                 }
                 else{
@@ -130,7 +141,14 @@ int main(int argc, char **argv) {
                     memset(buffer_sending,0,sizeof(buffer_sending));
                 }        
         }   
-        /*ret = poll(&fds, 1, 1000); // 1-second timeout
+        
+    }
+
+    close(fds.fd);
+    return 0;
+}
+
+/*ret = poll(&fds, 1, 1000); // 1-second timeout
         if (ret > 0) 
         {
             if (fds.revents & POLLIN) {
@@ -160,8 +178,3 @@ int main(int argc, char **argv) {
             printf("Timeout waiting for data...\n\r");
             len = 0; // Reset length for next read
         }*/
-    }
-
-    close(fds.fd);
-    return 0;
-}

@@ -34,7 +34,7 @@ int verif_instruction(char **instruction, char *buffer_sending){
 void print_instruction(char **instruction){
     printf("=====================================\n\r");
     printf("Instruction possible : \n\r");
-    for (int i = 0; i < 15; i++){
+    for (int i = 0; i < 18; i++){
         printf("%s\n\r", instruction[i]);
     }
 }
@@ -81,7 +81,10 @@ int main(int argc, char **argv) {
     "CHENILLARD3 OFF",
     "CHENILLARD FREQUENCE1",
     "CHENILLARD FREQUENCE2",
-    "CHENILLARD FREQUENCE3"
+    "CHENILLARD FREQUENCE3",
+    "Q/q/quit",
+    "C/c/clear",
+    "H/h/help"
     };
 
     if (argc < 2) {

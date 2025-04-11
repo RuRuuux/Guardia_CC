@@ -68,17 +68,14 @@ static void MPU_Config(void);
 /* USER CODE BEGIN 0 */
 void chenillard1(void){
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0 | GPIO_PIN_7 | GPIO_PIN_14, GPIO_PIN_RESET);
-    if (led == GPIO_PIN_0)
-	{
+    if (led == GPIO_PIN_0){
     	led = GPIO_PIN_7;
 	}
-	else if (led == GPIO_PIN_7 && chenillard1State == 0)
-	{
+	else if (led == GPIO_PIN_7 && chenillard1State == 0){
 		led = GPIO_PIN_14;
 		chenillard1State = 1;
 	}
-	else if (led == GPIO_PIN_7 && chenillard1State == 1)
-	{
+	else if (led == GPIO_PIN_7 && chenillard1State == 1){
 		led = GPIO_PIN_0;
 		chenillard1State = 0;
 	}
@@ -210,10 +207,8 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	if (huart->Instance == USART3)
-	{
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+	if (huart->Instance == USART3){
 		if (car == '\0'){
 			if(strcmp(buffer, "LED1 ON") == 0 && isChenillardOn == 0){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
@@ -279,10 +274,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	}
 }
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-	if (htim->Instance == TIM2 || htim->Instance == TIM3 || htim->Instance == TIM4)
-	{
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if (htim->Instance == TIM2 || htim->Instance == TIM3 || htim->Instance == TIM4){
 		if (chenillard == 1){
 			chenillard1();
 		}
@@ -301,10 +294,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 		}
 	}
-}
-
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-	HAL_UART_Transmit(&huart3, (uint8_t *)"Hello world!", strlen("Hello world!"), 100);
 }
 /* USER CODE END 4 */
 

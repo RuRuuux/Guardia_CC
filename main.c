@@ -63,16 +63,9 @@ int setup_serial_port(const char *port_name) {
     return fd;
 }
 
-int write_serial_port(int fd, const char *data, size_t size) {
-    return write(fd, data, size);
-}
 
 int main(int argc, char **argv) {
-    //int ret = -1;
-    //int len = 0;
-    //int bytes_read = 0;
     struct pollfd fds;
-    //fds.events = POLLIN;
     char *instruction[] = {
     "LED1 ON",
     "LED1 OFF",
@@ -118,15 +111,15 @@ int main(int argc, char **argv) {
             buffer_sending[strcspn(buffer_sending, "\n")] = 0;
             buffer_sending[strcspn(buffer_sending, "\r")] = 0;
             buffer_sending[strlen(buffer_sending)]= '\0';
-                if ((buffer_sending[0] == 'q' || buffer_sending[0] == 'Q') && strlen(buffer_sending) == 1){ 
+                if (((buffer_sending[0] == 'q' || buffer_sending[0] == 'Q') && strlen(buffer_sending) == 1) || strcmp(buffer_sending,"quit") == 0){ 
                     printf("Fermeture du programme.\n\r"); 
                     break; 
                 }
-                else if((buffer_sending[0] == 'c' || buffer_sending[0] == 'C') && strlen(buffer_sending) == 1){
+                else if(((buffer_sending[0] == 'c' || buffer_sending[0] == 'C') && strlen(buffer_sending) == 1) || strcmp(buffer_sending,"clear") == 0){
                     system("clear");
                     memset(buffer_sending,0,sizeof(buffer_sending));        
                 }
-                else if((buffer_sending[0] == 'h' || buffer_sending[0] == 'H') && strlen(buffer_sending) == 1){
+                else if(((buffer_sending[0] == 'h' || buffer_sending[0] == 'H') && strlen(buffer_sending) == 1) || strcmp(buffer_sending,"help") == 0){
                     print_instruction(instruction);
                     memset(buffer_sending,0,sizeof(buffer_sending));
                 }
@@ -146,7 +139,7 @@ int main(int argc, char **argv) {
                     printf("Mauvaise instruction\n\r");
                     memset(buffer_sending,0,sizeof(buffer_sending));
                 }        
-        }  
+        } 
         
     }
 
